@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif: Ekosistem</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome untuk ikon modern -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-nature-gradient {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #0288d1 100%);
+        }
+        .transition-all-custom {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- ================= 1. COVER / LOGIN PAGE ================= -->
+    <section id="login-section" class="fixed inset-0 z-50 bg-nature-gradient flex items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-md p-8 border border-white/20 transform transition-all-custom">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full mb-3 shadow-inner">
+                    <i class="fa-solid fa-seedling text-3xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-slate-900">Jelajah Ekosistem</h1>
+                <p class="text-sm text-slate-600 mt-1">Media Pembelajaran Interaktif & Modern</p>
+            </div>
+            
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nama Lengkap</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="user-name" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm outline-none transition-all" placeholder="Contoh: Budi Santoso">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Kelas</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </span>
+                        <input type="text" id="user-class" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm outline-none transition-all" placeholder="Contoh: Kelas 7A">
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 flex items-center justify-center space-x-2">
+                    <span>Mulai Belajar</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+            <div class="mt-6 text-center text-xs text-slate-400">
+                &copy; 2026 Modul Pembelajaran Biologi & Sains
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= MAIN APP (HIDDEN BEFORE LOGIN) ================= -->
+    <div id="main-app" class="hidden flex-col min-h-screen">
+        
+        <!-- Sticky Navbar -->
+        <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-earth-asia"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-800 text-lg block leading-tight">Ekosistem</span>
+                        <span class="text-xs text-emerald-600 font-medium">Interaktif Learning Hub</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('pendahuluan')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition active" data-target="pendahuluan">Pendahuluan</button>
+                    <button onclick="switchTab('materi-a')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition" data-target="materi-a">Bagian A: Lingkungan</button>
+                    <button onclick="switchTab('materi-b')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition" data-target="materi-b">Bagian B: Interaksi</button>
+                    <button onclick="switchTab('game-kuis')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition">Game & Kuis</button>
+                </nav>
+
+                <!-- User Profile Bar -->
+                <div class="flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <span id="display-name" class="block text-xs font-bold text-slate-800">Nama Siswa</span>
+                        <span id="display-class" class="block text-[10px] text-emerald-600 font-semibold uppercase">Kelas</span>
+                    </div>
+                    <button onclick="logout()" title="Keluar" class="w-9 h-9 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-xl flex items-center justify-center transition">
+                        <i class="fa-solid fa-power-off text-sm"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-600 hover:text-emerald-600">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Nav Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1">
+                <button onclick="switchTab('pendahuluan'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">Pendahuluan</button>
+                <button onclick="switchTab('materi-a'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">Bagian A: Lingkungan</button>
+                <button onclick="switchTab('materi-b'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">Bagian B: Interaksi</button>
+                <button onclick="switchTab('game-kuis'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">Game & Kuis</button>
+            </div>
+        </header>
+
+        <!-- Content Body Container -->
+        <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <!-- ================= SECTION 1: PENDAHULUAN & TUJUAN ================= -->
+            <div id="section-pendahuluan" class="tab-content space-y-8">
+                <!-- Welcome Banner -->
+                <div class="bg-nature-gradient rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-3">Modul IPA Terpadu</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">Mengenal Lebih Dekat Dunia Ekosistem</h2>
+                        <p class="text-emerald-100 text-sm sm:text-base leading-relaxed mb-6">
+                            Pernahkah kamu memperhatikan bagaimana ikan hidup di dalam air, tumbuhan memerlukan cahaya matahari, atau bagaimana hewan buruan bertahan hidup? Semua itu adalah bagian dari harmoni luar biasa dalam sebuah ekosistem.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="openVideoModal('https://drive.google.com/file/d/1PV6NcBLJjQkDtP1VRjggHrVyNBG0rPux/preview')" class="bg-white text-emerald-800 hover:bg-emerald-50 font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center space-x-2 text-sm">
+                                <i class="fa-solid fa-play text-emerald-600"></i>
+                                <span>Tonton Video Pengantar</span>
+                            </button>
+                            <button onclick="switchTab('materi-a')" class="bg-emerald-700/60 hover:bg-emerald-700 text-white border border-white/30 font-semibold px-6 py-3 rounded-xl transition flex items-center space-x-2 text-sm">
+                                <span>Mulai Pelajari Materi</span>
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10 pointer-events-none">
+                        <i class="fa-solid fa-tree text-[250px]"></i>
+                    </div>
+                </div>
+
+                <!-- Pertanyaan Pemantik -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 border-l-4 border-l-emerald-600">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">?</div>
+                            <h3 class="font-bold text-slate-800">Pertanyaan Pemantik</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Apa yang akan terjadi pada kelangsungan hidup kelinci di hutan apabila seluruh populasi rumput dan tumbuhan hijau musnah akibat musim kemarau panjang?
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 border-l-4 border-l-sky-500">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center"><i class="fa-solid fa-lightbulb"></i></div>
+                            <h3 class="font-bold text-slate-800">Pentingnya Belajar Ekosistem</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Memahami ekosistem melatih kita menyadari pentingnya menjaga keseimbangan alam, melestarikan lingkungan, serta mencegah krisis iklim demi kelangsungan bumi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tujuan Pembelajaran -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                    <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center space-x-2">
+                        <i class="fa-solid fa-bullseye text-emerald-600"></i>
+                        <span>Tujuan Pembelajaran (TP 1 - TP 5)</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">Target 01</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-2">Identifikasi Komponen</h4>
+                            <p class="text-xs text-slate-600">Mengidentifikasi komponen biotik dan abiotik di lingkungan sekitar.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">Target 02</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-2">Pengaruh Faktor</h4>
+                            <p class="text-xs text-slate-600">Menjelaskan pengaruh faktor biotik dan abiotik terhadap kelangsungan hidup organisme.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">Target 03</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-2">Bentuk Interaksi</h4>
+                            <p class="text-xs text-slate-600">Mengidentifikasi bentuk interaksi seperti kompetisi, predasi, herbivori, dan simbiosis.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">Target 04</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-2">Hubungan & Aliran</h4>
+                            <p class="text-xs text-slate-600">Menganalisis hubungan rantai makanan, jaring-jaring makanan, serta aliran energi.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition sm:col-span-2 lg:col-span-1">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">Target 05</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-2">Perubahan Lingkungan</h4>
+                            <p class="text-xs text-slate-600">Menganalisis dampak perubahan lingkungan terhadap kestabilan ekosistem.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= SECTION 2: MATERI BAGIAN A ================= -->
+            <div id="section-materi-a" class="tab-content hidden space-y-6">
+                <div class="border-b border-slate-200 pb-4 mb-6">
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Modul Pembelajaran 1</span>
+                    <h2 class="text-2xl font-bold text-slate-900">Bagian A: Pengaruh Lingkungan terhadap Organisme</h2>
+                    <p class="text-slate-600 text-sm mt-1">Pelajari bagaimana faktor lingkungan membentuk kehidupan dan adaptasi makhluk hidup.</p>
+                </div>
+
+                <!-- Accordion Container -->
+                <div class="space-y-4">
+                    <!-- Accordion Item 1 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-a1')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-leaf text-emerald-600"></i>
+                                <span>1. Lingkungan Makhluk Hidup</span>
+                            </span>
+                            <i id="icon-acc-a1" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-a1" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <p>Semua makhluk hidup di bumi tidak hidup dalam keterasingan; mereka dikelilingi oleh komponen yang saling mempengaruhi. Komponen tersebut terbagi atas:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>Komponen Biotik:</strong> Seluruh makhluk hidup seperti tumbuhan, hewan, jamur, dan mikroorganisme.</li>
+                                <li><strong>Komponen Abiotik:</strong> Unsur tak hidup seperti air, tanah, udara, cahaya matahari, dan suhu.</li>
+                                <li><strong>Keanekaragaman Hayati:</strong> Variasi bentuk kehidupan di bumi yang menjaga ketahanan ekosistem.</li>
+                                <li><strong>Menjaga Lingkungan:</strong> Tindakan sadar manusia untuk melestarikan keseimbangan alam agar sumber daya tetap lestari.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 2 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-a2')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-sun text-amber-500"></i>
+                                <span>2. Lingkungan Abiotik (Faktor Fisik & Kimia)</span>
+                            </span>
+                            <i id="icon-acc-a2" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-a2" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <p>Faktor abiotik sangat menentukan jenis organisme yang dapat bertahan di suatu wilayah:</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                    <strong class="text-slate-800 block mb-1">Suhu</strong>
+                                    <span class="text-xs">Mempengaruhi laju metabolisme enzim dan aktivitas fisiologis organisme.</span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                    <strong class="text-slate-800 block mb-1">Air & Kadar Garam (Salinitas)</strong>
+                                    <span class="text-xs">Media pelarut zat dan penentu habitat organisme air tawar atau laut.</span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                    <strong class="text-slate-800 block mb-1">Cahaya Matahari</strong>
+                                    <span class="text-xs">Sumber energi utama untuk proses fotosintesis tumbuhan hijau.</span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                    <strong class="text-slate-800 block mb-1">Jenis Tanah</strong>
+                                    <span class="text-xs">Menyediakan unsur hara, mineral, dan tempat berakar bagi vegetasi.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 3 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-a3')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-paw text-sky-600"></i>
+                                <span>3. Lingkungan Biotik (Interaksi Antar Makhluk)</span>
+                            </span>
+                            <i id="icon-acc-a3" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-a3" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <p>Interaksi di dalam komponen biotik membentuk dinamika populasi di alam:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>Pemangsaan (Predasi):</strong> Hubungan mangsa dan pemangsa (contoh: singa memangsa rusa).</li>
+                                <li><strong>Parasitisme:</strong> Hubungan di mana satu pihak diuntungkan dan pihak lain dirugikan (contoh: benalu pada pohon).</li>
+                                <li><strong>Persaingan (Kompetisi):</strong> Perebutan sumber daya terbatas seperti makanan, air, atau wilayah.</li>
+                                <li><strong>Penyerbuk (Polinator):</strong> Lebah atau serangga yang membantu penyerbukan bunga tanaman.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation between sections -->
+                <div class="flex justify-between pt-4">
+                    <button onclick="switchTab('pendahuluan')" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 text-sm font-semibold transition">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Sebelumnya
+                    </button>
+                    <button onclick="switchTab('materi-b')" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-md transition">
+                        Selanjutnya: Bagian B <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SECTION 3: MATERI BAGIAN B ================= -->
+            <div id="section-materi-b" class="tab-content hidden space-y-6">
+                <div class="border-b border-slate-200 pb-4 mb-6">
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Modul Pembelajaran 2</span>
+                    <h2 class="text-2xl font-bold text-slate-900">Bagian B: Interaksi Antara Komponen Penyusun Ekosistem</h2>
+                    <p class="text-slate-600 text-sm mt-1">Mempelajari tingkatan ekosistem, aliran energi, siklus biogeokimia, dan pola simbiosis.</p>
+                </div>
+
+                <!-- Tabs dalam Materi B atau Accordion Komprehensif -->
+                <div class="space-y-4">
+                    <!-- 1. Tingkatan Ekosistem -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-b1')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-layer-group text-indigo-600"></i>
+                                <span>1. Tingkatan Organisasi dalam Ekosistem</span>
+                            </span>
+                            <i id="icon-acc-b1" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-b1" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-center">
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                                    <span class="font-bold text-emerald-800 block text-xs uppercase">1. Individu</span>
+                                    <span class="text-[11px] text-slate-600">Seekor rusa tunggal</span>
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                                    <span class="font-bold text-emerald-800 block text-xs uppercase">2. Populasi</span>
+                                    <span class="text-[11px] text-slate-600">Sekelompok rusa</span>
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                                    <span class="font-bold text-emerald-800 block text-xs uppercase">3. Komunitas</span>
+                                    <span class="text-[11px] text-slate-600">Semua flora & fauna di hutan</span>
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                                    <span class="font-bold text-emerald-800 block text-xs uppercase">4. Bioma</span>
+                                    <span class="text-[11px] text-slate-600">Ekosistem darat luas (Taiga/Tundra)</span>
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                                    <span class="font-bold text-emerald-800 block text-xs uppercase">5. Biosfer</span>
+                                    <span class="text-[11px] text-slate-600">Seluruh lapisan bumi berkehidupan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Aliran Energi -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-b2')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-bolt text-amber-500"></i>
+                                <span>2. Aliran Energi (Rantai & Jaring Makanan)</span>
+                            </span>
+                            <i id="icon-acc-b2" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-b2" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <p>Energi berpindah dari matahari ke produsen hingga konsumen:</p>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-center font-semibold text-xs text-slate-700">
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-2 rounded-lg flex-1">Produsen (Rumput/Tanaman)</span>
+                                <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-2 rounded-lg flex-1">Konsumen I (Herbivora)</span>
+                                <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-2 rounded-lg flex-1">Konsumen II (Karnivora)</span>
+                                <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                                <span class="bg-sky-100 text-sky-800 px-3 py-2 rounded-lg flex-1">Dekomposer (Pengurai)</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2"><strong>Jaring-Jaring Makanan:</strong> Gabungan dari berbagai rantai makanan yang saling terhubung dalam suatu ekosistem.</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Daur Biogeokimia -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-b3')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-rotate text-sky-600"></i>
+                                <span>3. Daur Biogeokimia (Siklus Air, Karbon & Nitrogen)</span>
+                            </span>
+                            <i id="icon-acc-b3" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-b3" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <div class="space-y-3">
+                                <div>
+                                    <h5 class="font-semibold text-slate-800">Siklus Air</h5>
+                                    <p class="text-xs text-slate-600">Meliputi proses <em>Evaporasi</em> (penguapan air), <em>Transpirasi</em> (penguapan tumbuhan), <em>Kondensasi</em> (pembentukan awan), <em>Presipitasi</em> (hujan), dan <em>Koleksi</em> air ke lautan/daratan.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-slate-800">Siklus Karbon</h5>
+                                    <p class="text-xs text-slate-600">Pertukaran karbon melalui proses <em>Fotosintesis</em>, <em>Respirasi</em> makhluk hidup, aktivitas dekomposer, serta pembakaran bahan bakar fosil.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-slate-800">Siklus Nitrogen</h5>
+                                    <p class="text-xs text-slate-600">Melalui tahap <em>Fiksasi</em> nitrogen udara oleh bakteri, <em>Nitrifikasi</em>, <em>Absorpsi</em> oleh tumbuhan, hingga <em>Denitrifikasi</em> kembali ke atmosfer.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Interaksi & Simbiosis -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc-b4')" class="w-full px-6 py-4 text-left font-bold text-slate-800 flex justify-between items-center hover:bg-slate-50 transition">
+                            <span class="flex items-center space-x-3">
+                                <i class="fa-solid fa-handshake text-emerald-600"></i>
+                                <span>4. Pola Simbiosis & Interaksi Khusus</span>
+                            </span>
+                            <i id="icon-acc-b4" class="fa-solid fa-chevron-down text-sm text-slate-400 transition-transform"></i>
+                        </button>
+                        <div id="acc-b4" class="hidden px-6 pb-6 text-sm text-slate-600 space-y-3 border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                                    <strong class="text-emerald-900 block mb-1">Mutualisme (+/+)</strong>
+                                    <span class="text-xs text-slate-600">Kedua pihak saling diuntungkan. Contoh: Burung jalak dengan kerbau.</span>
+                                </div>
+                                <div class="bg-sky-50 p-3 rounded-xl border border-sky-100">
+                                    <strong class="text-sky-900 block mb-1">Komensalisme (+/0)</strong>
+                                    <span class="text-xs text-slate-600">Satu untung, satu tidak terpengaruh. Contoh: Anggrek pada pohon inang.</span>
+                                </div>
+                                <div class="bg-rose-50 p-3 rounded-xl border border-rose-100">
+                                    <strong class="text-rose-900 block mb-1">Parasitisme (+/-)</strong>
+                                    <span class="text-xs text-slate-600">Satu untung, satu dirugikan. Contoh: Benalu atau kutu pada hewan.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation between sections -->
+                <div class="flex justify-between pt-4">
+                    <button onclick="switchTab('materi-a')" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 text-sm font-semibold transition">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Sebelumnya: Bagian A
+                    </button>
+                    <button onclick="switchTab('game-kuis')" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-md transition">
+                        Lanjut ke Game & Kuis <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SECTION 4: EVALUASI & GAME ================= -->
+            <div id="section-game-kuis" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-200 pb-4 mb-6">
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Evaluasi Interaktif</span>
+                    <h2 class="text-2xl font-bold text-slate-900">Game, Puzzle & Kuis Pemahaman</h2>
+                    <p class="text-slate-600 text-sm mt-1">Uji pemahaman belajarmu melalui permainan edukatif dan kuis interaktif yang seru!</p>
+                </div>
+
+                <!-- A. Memory Games -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-slate-800 flex items-center space-x-2 text-base">
+                        <i class="fa-solid fa-brain text-purple-600"></i>
+                        <span>A. Memorize / Memory Games</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-2.5 py-1 rounded-md uppercase">Game 1</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-1">Memory Game Ekosistem</h4>
+                                <p class="text-xs text-slate-600 mb-4">Latih daya ingatmu mencocokkan istilah dan konsep dasar ekosistem.</p>
+                            </div>
+                            <button onclick="openModal('https://www.educaplay.com/learning-resources/31068305-memory game.html', 'Memory Game Ekosistem')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-gamepad"></i>
+                                <span>Mainkan Game 1</span>
+                            </button>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-2.5 py-1 rounded-md uppercase">Game 2</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-1">Biotik & Abiotik Lingkungan</h4>
+                                <p class="text-xs text-slate-600 mb-4">Uji ketepatan membedakan komponen hidup dan tak hidup dalam memori card.</p>
+                            </div>
+                            <button onclick="openModal('https://www.educaplay.com/learning-resources/31069321-komponen biotik dan abiotik lingkungan.html', 'Game Komponen Biotik & Abiotik')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-gamepad"></i>
+                                <span>Mainkan Game 2</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B. Puzzle Jigsaw -->
+                <div class="space-y-4 pt-4">
+                    <h3 class="font-bold text-slate-800 flex items-center space-x-2 text-base">
+                        <i class="fa-solid fa-puzzle-piece text-amber-600"></i>
+                        <span>B. Puzzle (Jigsaw)</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-md uppercase">Jigsaw 1</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-1">Puzzle Siklus Air</h4>
+                                <p class="text-xs text-slate-600 mb-4">Susun potongan puzzle interaktif mengenai siklus hidrologi air di bumi.</p>
+                            </div>
+                            <button onclick="openModal('https://puzzel.org/id/jigsaw/play?p=-P3xJuat0gxCfdjLCvIW', 'Puzzle Siklus Air')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-puzzle-piece"></i>
+                                <span>Mainkan Puzzle Air</span>
+                            </button>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-md uppercase">Jigsaw 2</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-1">Puzzle Rantai Makanan</h4>
+                                <p class="text-xs text-slate-600 mb-4">Susun rangkaian puzzle visual mengenai urutan rantai makanan produsen-konsumen.</p>
+                            </div>
+                            <button onclick="openModal('https://puzzel.org/id/jigsaw/play?p=-P3xfXDwmyDYnMdXamQs', 'Puzzle Rantai Makanan')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-puzzle-piece"></i>
+                                <span>Mainkan Puzzle Rantai Makanan</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C. Kuis Materi -->
+                <div class="space-y-4 pt-4">
+                    <h3 class="font-bold text-slate-800 flex items-center space-x-2 text-base">
+                        <i class="fa-solid fa-file-lines text-sky-600"></i>
+                        <span>C. Kuis Evaluasi Materi</span>
+                    </h3>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div>
+                            <span class="bg-sky-100 text-sky-700 text-xs font-semibold px-2.5 py-1 rounded-md uppercase">Evaluasi Akhir</span>
+                            <h4 class="font-bold text-slate-900 text-lg mt-2 mb-1">Quiz Wayground Ekosistem</h4>
+                            <p class="text-xs text-slate-600">Kerjakan kuis pilihan ganda interaktif untuk mengukur penguasaan materimu dari TP 1 sampai TP 5.</p>
+                        </div>
+                        <button onclick="openModal('https://wayground.com/join?gc=31550333', 'Quiz Wayground Ekosistem')" class="w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-xl text-sm transition flex items-center justify-center space-x-2 whitespace-nowrap shadow-md">
+                            <i class="fa-solid fa-rocket"></i>
+                            <span>Mulai Kuis Sekarang</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation back -->
+                <div class="flex justify-start pt-4">
+                    <button onclick="switchTab('materi-b')" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 text-sm font-semibold transition">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Materi B
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+            <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+                Media Pembelajaran Interaktif Ekosistem &bull; Dirancang khusus untuk Pembelajaran Sains Modern
+            </div>
+        </footer>
+    </div>
+
+    <!-- ================= MODAL INTERACTIVE CONTAINER (IFRAME) ================= -->
+    <div id="media-modal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[85vh] animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <h3 id="modal-title" class="font-bold text-sm tracking-wide">Media Interaktif</h3>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Body (Iframe) -->
+            <div class="flex-grow bg-slate-100 relative">
+                <iframe id="modal-iframe" src="" class="w-full h-full border-0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT INTERACTIVITY ================= -->
+    <script>
+        // State Management
+        const loginSection = document.getElementById('login-section');
+        const mainApp = document.getElementById('main-app');
+        const loginForm = document.getElementById('login-form');
+        const displayName = document.getElementById('display-name');
+        const displayClass = document.getElementById('display-class');
+
+        // Check local storage on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('eco_user_name');
+            const savedClass = localStorage.getItem('eco_user_class');
+            if (savedName && savedClass) {
+                initApp(savedName, savedClass);
+            }
+        });
+
+        // Login Handler
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('user-name').value.trim();
+            const studentClass = document.getElementById('user-class').value.trim();
+            if(name && studentClass) {
+                localStorage.setItem('eco_user_name', name);
+                localStorage.setItem('eco_user_class', studentClass);
+                initApp(name, studentClass);
+            }
+        });
+
+        function initApp(name, studentClass) {
+            displayName.textContent = name;
+            displayClass.textContent = studentClass;
+            loginSection.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            mainApp.classList.add('flex');
+            switchTab('pendahuluan');
+        }
+
+        function logout() {
+            localStorage.removeItem('eco_user_name');
+            localStorage.removeItem('eco_user_class');
+            mainApp.classList.add('hidden');
+            mainApp.classList.remove('flex');
+            loginSection.classList.remove('hidden');
+            loginForm.reset();
+        }
+
+        // Tab Navigation Switcher
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            const targetTab = document.getElementById(`section-${tabId}`);
+            if(targetTab) {
+                targetTab.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update active state on nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-emerald-700', 'bg-emerald-50', 'font-semibold');
+                if(btn.getAttribute('data-target') === tabId) {
+                    btn.classList.add('text-emerald-700', 'bg-emerald-50', 'font-semibold');
+                }
+            });
+        }
+
+        // Accordion Toggle
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`icon-${id}`);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modal Iframe Handlers
+        const mediaModal = document.getElementById('media-modal');
+        const modalIframe = document.getElementById('modal-iframe');
+        const modalTitle = document.getElementById('modal-title');
+
+        function openModal(url, title) {
+            modalTitle.textContent = title;
+            modalIframe.src = url;
+            mediaModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openVideoModal(url) {
+            openModal(url, 'Video Pembelajaran Pengantar Ekosistem');
+        }
+
+        function closeModal() {
+            mediaModal.classList.add('hidden');
+            modalIframe.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside content area
+        mediaModal.addEventListener('click', (e) => {
+            if (e.target === mediaModal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
